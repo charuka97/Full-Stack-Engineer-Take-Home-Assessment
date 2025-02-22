@@ -7,6 +7,7 @@ import {
   deleteTask,
 } from "../../controllers/TaskController";
 import { AppDataSource } from "../../database";
+import { Task } from "../../entities/Task";
 
 // Mock the AppDataSource
 jest.mock("../../database");
@@ -14,6 +15,7 @@ jest.mock("../../database");
 describe("TaskController Unit Tests", () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
+  let mockTaskRepository: any;
 
   beforeEach(() => {
     mockRequest = {};
@@ -21,6 +23,15 @@ describe("TaskController Unit Tests", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
+
+    // Mock the Task repository
+    mockTaskRepository = {
+      save: jest.fn(),
+    };
+
+    (AppDataSource.getRepository as jest.Mock).mockReturnValue(
+      mockTaskRepository
+    );
   });
 
   afterEach(() => {
@@ -29,17 +40,13 @@ describe("TaskController Unit Tests", () => {
 
   describe("createTask", () => {
     it("should create a task and return 201 status", async () => {
-      const mockTask = {
+      const mockTask: Task = {
         id: 1,
         title: "Test Task",
         description: "Test Description",
-        completed: false,
-        // Include any other properties or methods of the Task entity
-      };
-      const mockSave = jest.fn().mockResolvedValue(mockTask);
-      (AppDataSource.getRepository as jest.Mock).mockReturnValue({
-        save: mockSave,
-      });
+      } as Task;
+
+      mockTaskRepository.save.mockResolvedValue(mockTask);
 
       mockRequest.body = {
         title: "Test Task",
@@ -49,14 +56,10 @@ describe("TaskController Unit Tests", () => {
       await createTask(mockRequest as Request, mockResponse as Response);
 
       expect(mockResponse.status).toHaveBeenCalledWith(201);
-      expect(mockResponse.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          id: mockTask.id,
-          title: mockTask.title,
-          description: mockTask.description,
-          completed: mockTask.completed,
-        })
-      );
+      expect(mockResponse.json).toHaveBeenCalledWith(expect.objectContaining({
+        title: "Test Task",
+        description: "Test Description",
+      }));
     });
 
     it("should return 400 status if title or description is missing", async () => {

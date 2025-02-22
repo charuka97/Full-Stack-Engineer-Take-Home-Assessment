@@ -25,7 +25,6 @@ export const createTask = async (
     await taskRepository.save(task);
 
     // Return the created task
-    console.log(task)
     res.status(201).json(task);
   } catch (error) {
     console.error("Error creating task:", error);
