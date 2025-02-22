@@ -1,18 +1,17 @@
 import express from "express";
-import {
-    createTask,
-    getTasks,
-    markTaskAsDone,
-    updateTask,
-    deleteTask,
-} from "./controllers/TaskController";
-import {
-    createTaskValidator,
-    markTaskAsDoneValidator,
-    updateTaskValidator,
-    deleteTaskValidator,
-    handleValidationErrors,
-} from "./validators/taskValidators"; // Import validation middleware
+// Import validators from their respective files
+import { createTaskValidator } from "./validators/tasks/createTaskValidator";
+import { markTaskAsDoneValidator } from "./validators/tasks/markTaskAsDoneValidator";
+import { updateTaskValidator } from "./validators/tasks/updateTaskValidator";
+import { deleteTaskValidator } from "./validators/tasks/deleteTaskValidator";
+import { handleValidationErrors } from "./validators/tasks/handleValidationErrors";
+
+// Import controller functions from their respective files
+import { createTask } from "./controllers/tasks/createTask";
+import { getTasks } from "./controllers/tasks/getTasks";
+import { markTaskAsDone } from "./controllers/tasks/markTaskAsDone";
+import { updateTask } from "./controllers/tasks/updateTask";
+import { deleteTask } from "./controllers/tasks/deleteTask";
 
 const router = express.Router();
 
@@ -121,7 +120,12 @@ router.get("/tasks", handleValidationErrors, getTasks);
  *             example:
  *               message: "Task not found"
  */
-router.put("/tasks/:id/done", markTaskAsDoneValidator, handleValidationErrors, markTaskAsDone);
+router.put(
+  "/tasks/:id/done",
+  markTaskAsDoneValidator,
+  handleValidationErrors,
+  markTaskAsDone
+);
 
 /**
  * @swagger
@@ -179,7 +183,12 @@ router.put("/tasks/:id/done", markTaskAsDoneValidator, handleValidationErrors, m
  *             example:
  *               message: "Task not found"
  */
-router.put("/tasks/:id", updateTaskValidator, handleValidationErrors, updateTask);
+router.put(
+  "/tasks/:id",
+  updateTaskValidator,
+  handleValidationErrors,
+  updateTask
+);
 
 /**
  * @swagger
@@ -217,7 +226,12 @@ router.put("/tasks/:id", updateTaskValidator, handleValidationErrors, updateTask
  *             example:
  *               message: "Task not found"
  */
-router.delete("/tasks/:id", deleteTaskValidator, handleValidationErrors, deleteTask);
+router.delete(
+  "/tasks/:id",
+  deleteTaskValidator,
+  handleValidationErrors,
+  deleteTask
+);
 
 /**
  * @swagger
