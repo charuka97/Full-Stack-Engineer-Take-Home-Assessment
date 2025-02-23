@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { XMarkIcon, ClipboardIcon } from "@heroicons/react/24/solid";
 import { Task } from "../types";
-import Modal from "./Modal"; // Import Modal component
+import Modal from "./Modal";
 import Tooltip from "./Tooltip";
 
 const TaskList: React.FC<{
@@ -13,13 +13,9 @@ const TaskList: React.FC<{
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [modalType, setModalType] = useState<"success" | "error" | null>(null);
 
-  const [showTooltip, setShowTooltip] = useState<{
-    edit: boolean;
-    delete: boolean;
-  }>({
-    edit: false,
-    delete: false,
-  });
+  const [hoveredTaskId, setHoveredTaskId] = useState<number | null>(null);
+  const [showDeleteTooltip, setShowDeleteTooltip] = useState<boolean>(false);
+  const [showEditTooltip, setShowEditTooltip] = useState<boolean>(false);
 
   // Fetch tasks on component mount
   useEffect(() => {
@@ -33,6 +29,7 @@ const TaskList: React.FC<{
       const filteredTasks = response.data.filter(
         (task: Task) => !task.completed
       );
+      console.log(filteredTasks);
       setTasks(filteredTasks.slice(-5));
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -91,48 +88,56 @@ const TaskList: React.FC<{
           tasks.map((task) => (
             <li
               key={task.id}
-              className="p-4 bg-gray-300 shadow rounded-lg flex justify-between items-center relative"
+              className="relative flex items-center justify-between p-4 bg-gray-300 rounded-lg shadow"
             >
               {/* Delete Button (X icon) */}
               <button
                 onClick={() => handleDeleteTask(task.id)}
-                onMouseEnter={() =>
-                  setShowTooltip((prev) => ({ ...prev, delete: true }))
-                }
-                onMouseLeave={() =>
-                  setShowTooltip((prev) => ({ ...prev, delete: false }))
-                }
-                className="absolute top-1 right-2 p-1 text-gray-600 hover:text-red-600 transition duration-300"
+                onMouseEnter={() => {
+                  setShowDeleteTooltip(true);
+                  setHoveredTaskId(task.id);
+                }}
+                onMouseLeave={() => {
+                  setShowDeleteTooltip(false);
+                  setHoveredTaskId(null);
+                }}
+                className="absolute p-1 text-gray-600 transition duration-300 top-1 right-2 hover:text-red-600"
               >
-                {showTooltip.delete && <Tooltip message="Delete" />}
-                <XMarkIcon className="h-5 w-5" />
+                {showDeleteTooltip && hoveredTaskId === task.id && (
+                  <Tooltip message="Delete" />
+                )}
+                <XMarkIcon className="w-5 h-5" />
               </button>
 
               {/* Edit Button (Pencil icon) */}
               <button
                 onClick={() => handleEditTask(task)}
-                onMouseEnter={() =>
-                  setShowTooltip((prev) => ({ ...prev, edit: true }))
-                }
-                onMouseLeave={() =>
-                  setShowTooltip((prev) => ({ ...prev, edit: false }))
-                }
-                className="absolute top-1 right-10 p-1 text-gray-600 hover:text-blue-600 transition duration-300"
+                onMouseEnter={() => {
+                  setShowEditTooltip(true);
+                  setHoveredTaskId(task.id);
+                }}
+                onMouseLeave={() => {
+                  setShowEditTooltip(false);
+                  setHoveredTaskId(null);
+                }}
+                className="absolute p-1 text-gray-600 transition duration-300 top-1 right-10 hover:text-blue-600"
               >
-                {showTooltip.edit && <Tooltip message="Update" />}
-                <ClipboardIcon className="h-5 w-5" />
+                {showEditTooltip && hoveredTaskId === task.id && (
+                  <Tooltip message="Update" />
+                )}
+                <ClipboardIcon className="w-5 h-5" />
               </button>
 
               {/* Task Details */}
               <div>
-                <h3 className="text-lg font-bold pb-4">{task.title}</h3>
-                <p className="font-bold text-sm">{task.description}</p>
+                <h3 className="pb-4 text-lg font-bold">{task.title}</h3>
+                <p className="text-sm font-bold">{task.description}</p>
               </div>
 
               {/* Mark as Done Button */}
               <button
                 onClick={() => handleMarkAsDone(task.id)}
-                className="mt-auto px-10 py-1 border border-gray-600 text-gray-900 rounded transition duration-300 hover:bg-green-400 hover:text-white"
+                className="px-10 py-1 mt-auto text-gray-900 transition duration-300 border border-gray-600 rounded hover:bg-green-400 hover:text-white"
               >
                 Done
               </button>
