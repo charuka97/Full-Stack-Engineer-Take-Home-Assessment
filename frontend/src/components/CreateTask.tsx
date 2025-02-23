@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Modal from "./Modal";
+import { validateTitle, validateDescription } from "../utils/validation";
 
 const CreateTask: React.FC<{
   setTasks: any;
@@ -24,11 +25,11 @@ const CreateTask: React.FC<{
     }
   }, [selectedTask]);
 
-  // Validate inputs
+  // Validate inputs using the imported functions
   const validateInputs = () => {
     const newErrors: { title?: string; description?: string } = {};
-    if (!title.trim()) newErrors.title = "Title is required!";
-    if (!description.trim()) newErrors.description = "Description is required!";
+    newErrors.title = validateTitle(title);
+    newErrors.description = validateDescription(description);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
