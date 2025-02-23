@@ -1,5 +1,5 @@
 import React from "react";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid"; 
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
 interface ModalProps {
   message: string;
@@ -9,7 +9,7 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ message, type, onClose }) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md">
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md z-50">
       <div
         className={`p-6 rounded-lg shadow-lg text-white w-80 flex flex-col items-center ${
           type === "success" ? "bg-green-700/90" : "bg-red-700/90"
