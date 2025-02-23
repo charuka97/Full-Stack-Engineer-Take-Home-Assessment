@@ -28,9 +28,22 @@ const CreateTask: React.FC<{
   // Validate inputs using the imported functions
   const validateInputs = () => {
     const newErrors: { title?: string; description?: string } = {};
-    newErrors.title = validateTitle(title);
-    newErrors.description = validateDescription(description);
+
+    // Validate title
+    const titleError = validateTitle(title);
+    if (titleError) {
+      newErrors.title = titleError;
+    }
+
+    // Validate description
+    const descriptionError = validateDescription(description);
+    if (descriptionError) {
+      newErrors.description = descriptionError;
+    }
+
     setErrors(newErrors);
+
+    // Return true if there are no errors, else false
     return Object.keys(newErrors).length === 0;
   };
 

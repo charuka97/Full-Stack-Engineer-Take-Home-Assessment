@@ -29,7 +29,6 @@ const TaskList: React.FC<{
       const filteredTasks = response.data.filter(
         (task: Task) => !task.completed
       );
-      console.log(filteredTasks);
       setTasks(filteredTasks.slice(-5));
     } catch (error) {
       console.error("Error fetching tasks:", error);
