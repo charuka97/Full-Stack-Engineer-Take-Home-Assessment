@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TaskList from "./components/TaskList";
-import CreateTask from "./components/CreateTask";
+import TaskList from "./components/tasks/TaskList";
+import CreateTask from "./components/tasks/CreateTask";
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<any[]>([]);

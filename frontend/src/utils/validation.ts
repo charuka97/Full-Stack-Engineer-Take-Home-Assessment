@@ -13,8 +13,8 @@ export const validateTitle = (title: string): string | undefined => {
   ): string | undefined => {
     if (!description.trim()) return "Description is required!";
     if (description.length < 10) return "Title should be at least 10 characters long!";
-    if (description.length < 100)
-      return "Description should be at least 100 characters long!";
+    if (description.length > 100)
+      return "Description should not exceed 100 characters!";
     if (/^\s+|\s+$/g.test(description))
       return "Description cannot start or end with spaces!";
     if (description.includes("<") || description.includes(">"))
