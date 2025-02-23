@@ -27,6 +27,15 @@ services:
     networks:
       - todo-network
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - todo-network
+
 volumes:
   postgres_data:
 
