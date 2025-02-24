@@ -11,6 +11,8 @@ import {
 export const useTasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
+  const [modalType, setModalType] = useState<"success" | "error" | null>(null);
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -37,13 +39,29 @@ export const useTasks = () => {
   };
 
   const handleMarkAsDone = async (id: number) => {
-    await markTaskAsDone(id);
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    try {
+      await markTaskAsDone(id);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+
+      setModalMessage("Task mark as done successfully!");
+      setModalType("success");
+    } catch (error) {
+      setModalMessage("Failed to mark as done task. Please try again.");
+      setModalType("error");
+    }
   };
 
   const handleDeleteTask = async (id: number) => {
-    await deleteTask(id);
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    try {
+      await deleteTask(id);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+
+      setModalMessage("Task deleted successfully!");
+      setModalType("success");
+    } catch (error) {
+      setModalMessage("Failed to delete task. Please try again.");
+      setModalType("error");
+    }
   };
 
   return {
@@ -53,5 +71,9 @@ export const useTasks = () => {
     handleCreateOrUpdateTask,
     handleMarkAsDone,
     handleDeleteTask,
+    modalMessage,
+    modalType,
+    setModalMessage,
+    setModalType,
   };
 };

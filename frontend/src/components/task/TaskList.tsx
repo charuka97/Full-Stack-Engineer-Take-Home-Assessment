@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { XMarkIcon, ClipboardIcon } from "@heroicons/react/24/solid";
 import { Task } from "../../types";
-import Modal from "../ui/Modal";
 import Tooltip from "../ui/Tooltip";
 
 interface TaskListProps {
@@ -17,24 +16,12 @@ const TaskList: React.FC<TaskListProps> = ({
   onDeleteTask,
   onMarkAsDone,
 }) => {
-  const [modalMessage, setModalMessage] = useState<string | null>(null);
-  const [modalType, setModalType] = useState<"success" | "error" | null>(null);
   const [hoveredTaskId, setHoveredTaskId] = useState<number | null>(null);
   const [showDeleteTooltip, setShowDeleteTooltip] = useState<boolean>(false);
   const [showEditTooltip, setShowEditTooltip] = useState<boolean>(false);
 
   return (
     <div>
-      {modalMessage && modalType && (
-        <Modal
-          message={modalMessage}
-          type={modalType}
-          onClose={() => {
-            setModalMessage(null);
-            setModalType(null);
-          }}
-        />
-      )}
       <ul className="space-y-4">
         {tasks.length === 0 ? (
           <p className="text-gray-500">No tasks available</p>
