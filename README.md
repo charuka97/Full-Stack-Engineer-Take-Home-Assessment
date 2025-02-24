@@ -68,14 +68,14 @@ The backend will be available at `http://localhost:5000` and the frontend at `ht
 
         Set Up Environment Variables
             Create a .env file in the backend directory
-            ```bash
+          
             PORT=5000
             DB_HOST=localhost
             DB_PORT=5432
             DB_USER=postgres
             DB_PASSWORD=yourPassword
             DB_NAME=postgres
-            ```
+           
 
         ```bash
         cd backend
