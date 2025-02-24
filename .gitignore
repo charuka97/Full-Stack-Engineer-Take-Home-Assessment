@@ -1,6 +1,5 @@
 # Node.js
 node_modules/
-dist/
 npm-debug.log
 yarn-error.log
 
@@ -28,6 +27,28 @@ Thumbs.db
 logs/
 *.log
 
-# Build artifacts
+# Build artifacts (General)
 build/
+
+# Vite specific
+# Ignore Vite cache and build output
+.vite/
+dist/
+
+# React specific
+# Ignore the public folder (if any React assets are inside)
+public/
+
+# Ignore frontend testing and coverage reports
 coverage/
+
+# npm/yarn lock files (if you don't want to commit them)
+frontend/package-lock.json
+frontend/yarn.lock
+
+# Temporary or editor-specific files
+*.swp
+*.swo
+
+# Mac-specific files
+.DS_Store
