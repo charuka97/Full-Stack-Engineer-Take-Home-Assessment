@@ -32,6 +32,7 @@ const TaskList: React.FC<TaskListProps> = ({
               className="relative flex items-center justify-between p-4 bg-gray-300 rounded-lg shadow"
             >
               <button
+                data-testid="delete-button"
                 onClick={() => onDeleteTask(task.id)}
                 onMouseEnter={() => {
                   setShowDeleteTooltip(true);

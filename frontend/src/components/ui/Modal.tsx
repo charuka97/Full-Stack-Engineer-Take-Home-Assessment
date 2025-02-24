@@ -17,9 +17,15 @@ const Modal: React.FC<ModalProps> = ({ message, type, onClose }) => {
       >
         {/* Success or Error Icon */}
         {type === "success" ? (
-          <CheckCircleIcon className="w-12 h-12 text-green-300" />
+          <CheckCircleIcon
+            data-testid="success-icon"
+            className="w-12 h-12 text-green-300"
+          />
         ) : (
-          <XCircleIcon className="w-12 h-12 text-red-300" />
+          <XCircleIcon
+            data-testid="error-icon"
+            className="w-12 h-12 text-red-300"
+          />
         )}
 
         <p className="text-lg font-semibold text-center mt-2">{message}</p>
